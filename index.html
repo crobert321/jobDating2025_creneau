@@ -2,9 +2,11 @@
 <html>
   <head>
     <base target="_top">
+    <meta charset="UTF-8">
+    <title>Inscription Étudiant</title>
   </head>
   <body>
-    <h2>Inscription Étudiant</h2>
+    <h2>Formulaire Étudiant / Entreprise</h2>
     <form id="formulaire">
       <label>Entreprise: <input name="entreprise" required></label><br><br>
       <label>Créneau: <input name="creneau" required></label><br><br>
@@ -14,7 +16,7 @@
       <button type="submit">Envoyer</button>
     </form>
 
-    <div id="message"></div>
+    <div id="message" style="margin-top: 20px;"></div>
 
     <script>
       document.getElementById("formulaire").addEventListener("submit", function(e) {
@@ -23,12 +25,12 @@
         const data = Object.fromEntries(formData.entries());
 
         google.script.run
-          .withSuccessHandler(function(msg) {
-            document.getElementById("message").innerText = msg;
+          .withSuccessHandler(function(message) {
+            document.getElementById("message").innerText = message;
             document.getElementById("formulaire").reset();
           })
-          .withFailureHandler(function(err) {
-            document.getElementById("message").innerText = "Erreur : " + err.message;
+          .withFailureHandler(function(error) {
+            document.getElementById("message").innerText = "Erreur : " + error.message;
           })
           .traiterDonnees(data);
       });
