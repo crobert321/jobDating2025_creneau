@@ -17,28 +17,29 @@
 
   <div id="message"></div>
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxAy-BwqBIhYf1oGv2Tt80Ki2o120rLwvSlnv-TBjN-FX8mLUGC33cwi_qFxDiVketyaw/exec";
+ <script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbxAy-BwqBIhYf1oGv2Tt80Ki2o120rLwvSlnv-TBjN-FX8mLUGC33cwi_qFxDiVketyaw/exec";
 
-    document.getElementById("formulaire").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData.entries());
+  document.getElementById("formulaire").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
 
-      fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      })
-      .then(response => response.text())
-      .then(msg => {
-        document.getElementById("message").innerText = msg;
-        document.getElementById("formulaire").reset();
-      })
-      .catch(err => {
-        document.getElementById("message").innerText = "Erreur : " + err;
-      });
+    fetch(API_URL, {
+      method: "POST",
+      // ❌ SUPPRIMÉ : pas de Content-Type JSON
+      body: JSON.stringify(data)
+    })
+    .then(response => response.text())
+    .then(msg => {
+      document.getElementById("message").innerText = msg;
+      document.getElementById("formulaire").reset();
+    })
+    .catch(err => {
+      document.getElementById("message").innerText = "Erreur : " + err;
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
