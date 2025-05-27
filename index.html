@@ -1,45 +1,37 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Formulaire Étudiant / Entreprise</title>
-</head>
-<body>
-  <h2>Inscription Étudiant</h2>
-  <form id="formulaire">
-    <label>Entreprise: <input name="entreprise" required></label><br><br>
-    <label>Créneau: <input name="creneau" required></label><br><br>
-    <label>Nom étudiant: <input name="nom_etudiant" required></label><br><br>
-    <label>Prénom étudiant: <input name="prenom_etudiant" required></label><br><br>
-    <label>Email étudiant: <input type="email" name="mail_etudiant" required></label><br><br>
-    <button type="submit">Envoyer</button>
-  </form>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <h2>Inscription Étudiant</h2>
+    <form id="formulaire">
+      <label>Entreprise: <input name="entreprise" required></label><br><br>
+      <label>Créneau: <input name="creneau" required></label><br><br>
+      <label>Nom étudiant: <input name="nom_etudiant" required></label><br><br>
+      <label>Prénom étudiant: <input name="prenom_etudiant" required></label><br><br>
+      <label>Email étudiant: <input type="email" name="mail_etudiant" required></label><br><br>
+      <button type="submit">Envoyer</button>
+    </form>
 
-  <div id="message"></div>
+    <div id="message"></div>
 
- <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbxAy-BwqBIhYf1oGv2Tt80Ki2o120rLwvSlnv-TBjN-FX8mLUGC33cwi_qFxDiVketyaw/exec";
+    <script>
+      document.getElementById("formulaire").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
 
-  document.getElementById("formulaire").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-
-    fetch(API_URL, {
-      method: "POST",
-      // ❌ SUPPRIMÉ : pas de Content-Type JSON
-      body: JSON.stringify(data)
-    })
-    .then(response => response.text())
-    .then(msg => {
-      document.getElementById("message").innerText = msg;
-      document.getElementById("formulaire").reset();
-    })
-    .catch(err => {
-      document.getElementById("message").innerText = "Erreur : " + err;
-    });
-  });
-</script>
-
-</body>
+        google.script.run
+          .withSuccessHandler(function(msg) {
+            document.getElementById("message").innerText = msg;
+            document.getElementById("formulaire").reset();
+          })
+          .withFailureHandler(function(err) {
+            document.getElementById("message").innerText = "Erreur : " + err.message;
+          })
+          .traiterDonnees(data);
+      });
+    </script>
+  </body>
 </html>
